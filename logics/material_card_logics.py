@@ -3,8 +3,6 @@ from .data_access.material_card_data_access import MaterialCardDataAccess
 from .schemas.material_card_schemas import MaterialCardResponse
 
 
-# logic.py (or a section in your server module)
-
 def _format_single_card(master, version):
     """
     Helper Logic: Formats a single version row into a UI card dictionary.

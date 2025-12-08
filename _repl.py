@@ -16,6 +16,6 @@ anvil.server.connect("server_ECKX4NUIL4QX54CHZGWUXM5R-DJLAASI6MOPSH76S")
 # PUBLIC API - START PROGRAM HERE:
 # ============================================================================
 
-test = anvil.server.call("get_skus_for_material", document_id="vin_mmat_0001")
+test = anvil.server.call("get_material_full_row", document_id="vin_mmat_0001")
 
 print (test)
