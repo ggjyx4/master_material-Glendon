@@ -1,25 +1,26 @@
 import anvil.server
-from api_framework import APIEndpoint
+from .api_framework import APIEndpoint
 from typing import List, Dict, Any
-from schemas import material_detail_schema as schemas
-from data_access import material_detail_data_access as data_access
-from logics import material_detail_logics as logics
+from schemas.material_detail_schema import MaterialDetailRequest, MaterialDetailResponse, TechnicalDetailResponse, CostDetailResponse
+from data_access.material_detail_data_access import MaterialDetailDataAccess
+from logics.material_detail_logics import MaterialDetailLogics
 
 # ------------------------------------------------------------------
-repository = data_access.MaterialDetailRepository()
+data_access = MaterialDetailDataAccess()
+logics = MaterialDetailLogics()
 # ------------------------------------------------------------------
 
 @anvil.server.route("/get_material_detail")
 @APIEndpoint(
   name="get_material_detail",
-  request_model=schemas.MaterialIDRequest,
-  response_model=schemas.MaterialDetailResponse,
+  request_model=MaterialDetailRequest,
+  response_model=MaterialDetailResponse,
   summary="Get Material Dashboard Details",
   tags=["Materials", "Dashboard"]
 )
-def get_material_detail(request: schemas.MaterialIDRequest):
+def get_material_detail(request: MaterialDetailRequest):
     # 1. Data Access
-    version_row = repository.get_current_version_row(request.document_id)
+    version_row = data_access.get_current_version_row(request.document_id)
     # 2. Logic & Transformation
     response_data = logics.build_material_detail(version_row)
     # 3. Response
@@ -36,7 +37,7 @@ def get_material_detail(request: schemas.MaterialIDRequest):
   tags=["Materials", "Technical"]
 )
 def get_technical_detail(request: schemas.MaterialIDRequest):
-    version_row = repository.get_current_version_row(request.document_id)
+    version_row = data_access.get_current_version_row(request.document_id)
     return logics.build_technical_detail(version_row)
 
 # ------------------------------------------------------------------
@@ -50,7 +51,7 @@ def get_technical_detail(request: schemas.MaterialIDRequest):
   tags=["Materials", "Financial"]
 )
 def get_cost_detail(request: schemas.MaterialIDRequest):
-    version_row = repository.get_current_version_row(request.document_id)
+    version_row = data_access.get_current_version_row(request.document_id)
     return logics.build_cost_detail(version_row)
 
 # ------------------------------------------------------------------
@@ -64,7 +65,7 @@ def get_cost_detail(request: schemas.MaterialIDRequest):
   tags=["Materials", "History"]
 )
 def get_version_history(request: schemas.MaterialIDRequest):
-    history_rows = repository.get_version_history_rows(request.document_id)
+    history_rows = data_access.get_version_history_rows(request.document_id)
     return logics.build_version_history(history_rows)
 
 # ------------------------------------------------------------------
@@ -79,7 +80,7 @@ def get_version_history(request: schemas.MaterialIDRequest):
 )
 def get_material_full_row(request: schemas.MaterialIDRequest):
     try:
-        version_row = repository.get_current_version_row(request.document_id)
+        version_row = data_access.get_current_version_row(request.document_id)
         return logics.build_full_row(version_row)
     except Exception:
         # Return empty dict if not found (matching original logic)

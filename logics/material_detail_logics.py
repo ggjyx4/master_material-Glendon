@@ -1,5 +1,6 @@
 import anvil.server
-from . import schemas
+from .data_access.material_detail_data_access import MaterialDetailDataAccess
+from .schemas.material_detail_schemas import MaterialDetailResponse
 
 class material_detail_logics:
     def _get(row, key, default=None):

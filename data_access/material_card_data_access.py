@@ -1,4 +1,4 @@
-from base_repository import BaseRepository
+from .base import BaseRepository
 
 class MaterialCard(BaseRepository):
     def __init__(self):

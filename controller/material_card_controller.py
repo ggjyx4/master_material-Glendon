@@ -1,11 +1,14 @@
 import anvil.server
-from api_framework import APIEndpoint
+from .api_framework import APIEndpoint
 from typing import List, Dict, Any
 
-from logics import material_card_logics as logics
-from data_access import material_card_data_access as data_access
-from schemas import material_card_schema as schemas
+from logics.material_card_logics import MaterialCardLogics
+from data_access.material_card_data_access import MaterialCardDataAccess
+from schemas.material_card_schema import ListMaterialCardsRequest, MaterialCard
 # ------------------------------------------------------------------
+
+logics = MaterialCardLogics()
+data_access = MaterialCardDataAccess()
 
 @anvil.server.route("/list_material_cards")
 @APIEndpoint(
