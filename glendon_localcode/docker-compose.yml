@@ -1,0 +1,26 @@
+services:
+  # Your existing API service (Make sure it is named 'api'!)
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/postgres
+    depends_on:
+      - db
+
+  # Your Database
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+
+  # --- ADD THIS SECTION ---
+  frontend:
+    build: ./frontend # Look inside the frontend folder
+    ports:
+      - "8501:8501" # Open port 8501
+    depends_on:
+      - api # Wait for API to start
